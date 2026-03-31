@@ -1,0 +1,13 @@
+[package]
+name = "lumen-storage-client"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+slog.workspace = true
+serde.workspace = true
+schemars.workspace = true
+reqwest = { workspace = true, features = ["rustls", "stream"] }
+progenitor.workspace = true
+progenitor-client.workspace = true
