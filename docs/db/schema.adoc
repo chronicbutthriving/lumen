@@ -1,0 +1,11 @@
+= DB Schema
+
+Within the database schema, there are a few conventions to follow:
+
+* Timestamp fields should be named `time_<event>`. For example, `time_created`.
+* Duration fields should be named `<event>_in`. For example, `expires_in`.
+* Table names must be singular. For example, we prefer `user` over `users`.
+* Table names must be prefixed with the service name. For example,
+  `storage_object` is preferred over `object` to avoid naming conflicts with
+  other services.
+

@@ -1,0 +1,13 @@
+---
+services:
+  db:
+    image: postgres:18-alpine
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - /var/lib/postgresql/18/docker
+      - ./schema/psql/dbinit.sql:/docker-entrypoint-initdb.d/dbinit.sql:ro
+    ports:
+      - 5432:5432

@@ -1,0 +1,3 @@
+= Lumen Internal Documentation
+
+* file:./db/index.adoc[DB docs]

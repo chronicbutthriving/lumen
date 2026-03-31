@@ -1,0 +1,3 @@
+= Lumen Database Documentation
+
+* file:./schema.adoc[DB Schema instructions]
