@@ -52,7 +52,7 @@ slog-async = "2.8"
 test-strategy = "0.4.5"
 thiserror = "2.0"
 tokio = "1.47.0"
-toml = "0.8.23"
+toml = "1.1.1"
 url = "2.5.4"
 uuid = { version = "1.17.0", features = ["serde", "v4"] }
 
