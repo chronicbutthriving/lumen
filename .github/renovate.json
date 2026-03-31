@@ -1,0 +1,7 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>chronicbutthriving/renovate-config",
+    "local>chronicbutthriving/renovate-config//actions/pin"
+  ]
+}
