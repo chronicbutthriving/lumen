@@ -7,6 +7,7 @@ use crate::{
     models::{ObjectModel, StorageProviderKind},
 };
 
+#[derive(Debug, Default)]
 pub struct ObjectFilter {
     pub ids: Option<Vec<ObjectUuid>>,
     pub provider_kinds: Option<Vec<StorageProviderKind>>,
@@ -31,16 +32,6 @@ impl ObjectFilter {
     pub fn with_deleted(mut self, deleted: bool) -> Self {
         self.deleted = deleted;
         self
-    }
-}
-
-impl Default for ObjectFilter {
-    fn default() -> Self {
-        Self {
-            ids: None,
-            provider_kinds: None,
-            deleted: false,
-        }
     }
 }
 

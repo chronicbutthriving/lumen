@@ -20,4 +20,10 @@ impl MockStore {
     }
 }
 
+impl Default for MockStore {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<T> StorageStore for T where T: ObjectStore + Send + Sync + 'static {}

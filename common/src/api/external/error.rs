@@ -119,7 +119,7 @@ impl Error {
             | Error::Unauthenticated { .. }
             | Error::InvalidRequest { .. }
             | Error::InvalidValue { .. }
-            | Error::Forbidden { .. }
+            | Error::Forbidden
             | Error::InternalError { .. }
             | Error::NotFound { .. } => false,
         }
@@ -176,12 +176,12 @@ impl From<Error> for HttpError {
             Error::ObjectNotFound { type_name } => HttpError::for_client_error(
                 Some(String::from("ObjectNotFound")),
                 dropshot::ClientErrorStatusCode::NOT_FOUND,
-                format!("not found: {}", type_name.to_string()),
+                format!("not found: {}", type_name),
             ),
 
             Error::ObjectAlreadyExists { type_name } => HttpError::for_bad_request(
                 Some(String::from("ObjectAlreadyExists")),
-                format!("object already exists: {}", type_name.to_string()),
+                format!("object already exists: {}", type_name),
             ),
 
             Error::Unauthenticated { internal_message } => HttpError {
