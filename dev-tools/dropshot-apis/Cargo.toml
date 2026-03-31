@@ -1,0 +1,15 @@
+[package]
+name = "lumen-dropshot-apis"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+camino.workspace = true
+clap.workspace = true
+dropshot-api-manager.workspace = true
+dropshot-api-manager-types.workspace = true
+lumen-storage-api.workspace = true
+serde.workspace = true
+serde_json.workspace = true

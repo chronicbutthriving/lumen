@@ -1,0 +1,27 @@
+= lumen-uuid-kinds
+
+Within Lumen, we use UUIDs to identify various kinds of entities. Using a single
+`Uuid` type for all of them risks mixing up the different kinds of IDs.
+
+To address that, we're using https://docs.rs/newtype-uuid[newtype-uuid] to
+generate unique-per-entity UUID types.
+
+== Adding a new UUID kind
+
+Start by adding a new element to the invocation of `impl_typed_uuid_kind!` in
+`src/lib.rs`. For example:
+
+[source,rust]
+----
+impl_typed_uuid_kind! {
+    // ...
+    User => "user",
+    // ...
+};
+----
+
+This will:
+
+* Create a new `TypedUuidKind` called `UserKind`. This kind will become the type
+  parameter to `TypedUuid` and other related generic types.
+* Create a type alias `type UserUuid = TypedUuid<UserKind>`.

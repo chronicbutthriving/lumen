@@ -1,0 +1,36 @@
+:showtitle:
+:toc: left
+:icons: font
+
+= Lumen
+
+This repo houses the work-in-progress Lumen project.
+
+== Documentation
+
+https://docs.chronicbutthriving.com/api[Docs are automatically generated for the
+public (externally-facing) API] based on the OpenAPI spec that itself is
+automatically generated from the server implementation.
+
+== Build and Run
+
+To run the services, you can use `cargo run` to run any individual service.
+
+[source,bash]
+----
+# Run the gateway service
+cargo run -p gateway
+
+# Run the storage service
+cargo run -p storage
+
+# Run the resource service
+cargo run -p resource
+----
+
+=== Run tests with nextest
+
+The supported way to run tests is via https://nexte.st/[cargo-nextest].
+
+This is pre-installed for those using https://mise.jdx.dev[mise] in this
+project by way of the file:./mise.toml[mise.toml] file located in this repo.

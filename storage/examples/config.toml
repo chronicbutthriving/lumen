@@ -1,0 +1,29 @@
+[dropshot]
+default_request_body_max_bytes = 8388608
+
+[database]
+# The URL to connect to the database. The format is:
+# postgresql://user:password@host:port/database?options
+url = "postgresql://user:password@localhost:5432/chronic?sslmode=disable"
+
+# The maximum number of connections to the database to allow when pooling.
+max_conns = 10
+
+# Example of a storage provider for local files
+[[storage.providers.local]]
+active = true
+kind = "local"
+path = "/tmp/chronic"
+
+# Example of a storage provider for Google Cloud Storage (GCS)
+#[[storage.providers.gcs]]
+#active = false
+#kind   = "gcs"
+#bucket = "bkt-p-chronic-storage"
+#prefix = "chronic"
+
+[log]
+# Log at this level or higher.
+level = "debug"
+
+mode = "stderr-terminal"

@@ -1,0 +1,16 @@
+[package]
+name = "lumen-common"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+thiserror.workspace = true
+chrono.workspace = true
+dropshot.workspace = true
+http.workspace = true
+schemars = { workspace = true, features = ["chrono", "uuid1"] }
+serde.workspace = true
+serde_with.workspace = true
+parse-display.workspace = true
+uuid.workspace = true
