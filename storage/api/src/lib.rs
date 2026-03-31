@@ -9,6 +9,9 @@ api_versions!([(1, INITIAL),]);
         allow_other_tags = false,
         policy = EndpointTagPolicy::ExactlyOne,
         tags = {
+            "objects" = {
+                description = "Endpoints related to the storage of objects",
+            },
             "system/status" = {
                 description = "Endpoints related to system health",
             },
