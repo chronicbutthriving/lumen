@@ -27,9 +27,7 @@ impl StorageApi for StorageApiImpl {
 
         let result = ObjectStore::must_get(storage.as_ref(), path_params.id)
             .await
-            .map_err(|error| {
-                Error::internal_error(format!("couldn't get object: {}", error))
-            })?;
+            .map_err(|e| Error::from(e))?;
 
         Ok(HttpResponseOk(result.into()))
     }
