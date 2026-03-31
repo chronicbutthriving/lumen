@@ -1,0 +1,11 @@
+[package]
+name = "lumen-migrate"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+diesel.workspace = true
+diesel_migrations.workspace = true
+clap.workspace = true
+anyhow.workspace = true

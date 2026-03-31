@@ -1,9 +1,10 @@
 [workspace]
-resolver = "2"
+resolver = "3"
 members = [
   "clients/storage",
   "common",
   "dev-tools/dropshot-apis",
+  "dev-tools/migrate",
   "dev-tools/xtask",
   "storage",
   "storage/api",
@@ -25,6 +26,7 @@ chrono = { version = "0.4", features = [ "serde" ] }
 clap = { version = "4.5", features = ["cargo", "derive", "env", "wrap_help"] }
 derive-where = "1.6.1"
 diesel = { version = "2.2.0", features = ["postgres", "chrono"] }
+diesel_migrations = { version = "2.2.0", features = ["postgres"] }
 diesel-enums = { version = "0.2.2", features = ["postgres"] }
 dropshot = "0.16.6"
 dropshot-api-manager = "0.6.0"

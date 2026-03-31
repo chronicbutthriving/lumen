@@ -1,3 +1,6 @@
+[env]
+_.file = ".env"
+
 [tools]
 "cargo:cargo-nextest" = "0.9.132"
 "cargo:diesel_cli" = { version = "2.3.7", default-features = false, features = "postgres" }

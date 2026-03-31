@@ -1,7 +1,6 @@
 #[cfg(feature = "diesel")]
 use derive_where::derive_where;
 
-#[cfg(feature = "diesel")]
 use diesel::{
     backend::Backend,
     deserialize::{self, FromSql, FromSqlRow},
@@ -10,57 +9,13 @@ use diesel::{
     sql_types,
 };
 
-#[cfg(feature = "diesel")]
 use iddqd::{Comparable, Equivalent};
-#[cfg(feature = "diesel")]
 use lumen_uuid_kinds::{GenericUuid, TypedUuid, TypedUuidKind};
-#[cfg(feature = "diesel")]
 use schemars::JsonSchema;
-#[cfg(feature = "diesel")]
 use serde::{Deserialize, Serialize};
-#[cfg(feature = "diesel")]
 use std::fmt;
-#[cfg(feature = "diesel")]
 use std::str::FromStr;
-#[cfg(feature = "diesel")]
 use uuid::Uuid;
-
-/// Pagination parameters for database queries.
-pub struct PaginationParams {
-    /// The maximum number of items to return.
-    pub limit: Option<u32>,
-
-    /// The number of items to skip before starting to collect the result set.
-    pub offset: Option<u32>,
-}
-
-impl PaginationParams {
-    /// Creates a new PaginationParams with the specified limit and offset.
-    pub fn new(limit: Option<u32>, offset: Option<u32>) -> Self {
-        Self { limit, offset }
-    }
-
-    /// Sets the limit for the number of items to return.
-    pub fn with_limit(mut self, limit: u32) -> Self {
-        self.limit = Some(limit);
-        self
-    }
-
-    /// Sets the offset for the number of items to skip.
-    pub fn with_offset(mut self, offset: u32) -> Self {
-        self.offset = Some(offset);
-        self
-    }
-}
-
-impl Default for PaginationParams {
-    fn default() -> Self {
-        Self {
-            limit: Some(50),
-            offset: Some(0),
-        }
-    }
-}
 
 /// Returns the corresponding `DbTypedUuid` for this `TypedUuid`.
 ///
@@ -219,17 +174,5 @@ mod tests {
     fn test_compare_consistency(id1: ObjectUuid, id2: ObjectUuid) {
         let db_id1 = DbTypedUuid::from(id1);
         assert_eq!(db_id1.compare(&id2), id1.cmp(&id2));
-    }
-
-    #[test]
-    fn test_with_limit_sets_limit() {
-        let params = PaginationParams::default().with_limit(100);
-        assert_eq!(params.limit, Some(100));
-    }
-
-    #[test]
-    fn test_with_offset_sets_offset() {
-        let params = PaginationParams::default().with_offset(10);
-        assert_eq!(params.offset, Some(10));
     }
 }

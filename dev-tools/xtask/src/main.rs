@@ -20,6 +20,7 @@ struct Args {
 enum Cmds {
     Clippy(clippy::ClippyArgs),
     Openapi(external::External),
+    Migrate(external::External),
 }
 
 fn main() -> Result<()> {
@@ -27,5 +28,6 @@ fn main() -> Result<()> {
     match args.cmd {
         Cmds::Clippy(args) => clippy::run_cmd(args),
         Cmds::Openapi(external) => external.exec_bin("lumen-dropshot-apis"),
+        Cmds::Migrate(external) => external.exec_bin("lumen-migrate"),
     }
 }

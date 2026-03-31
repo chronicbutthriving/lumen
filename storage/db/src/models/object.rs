@@ -1,17 +1,17 @@
-use crate::schema::storage_object;
 use chrono::{DateTime, Utc};
 use diesel::{
     Selectable,
     prelude::{Insertable, Queryable},
 };
 use diesel_enums::pg_enum;
+use lumen_common::db::schema;
 use lumen_common::db::DbTypedUuid;
 use lumen_storage_types_versions::v2026_03_31_00::object;
 use lumen_uuid_kinds::{ObjectKind, ObjectUuid};
 
 #[pg_enum]
 #[db(
-    sql_type = crate::schema::sql_types::StorageProviderKind,
+    sql_type = schema::sql_types::StorageProviderKind,
     skip_test
 )]
 pub enum StorageProviderKind {
@@ -19,7 +19,7 @@ pub enum StorageProviderKind {
 }
 
 #[derive(Debug, Clone, Queryable, Insertable, Selectable)]
-#[diesel(table_name = storage_object)]
+#[diesel(table_name = schema::storage_object)]
 pub struct ObjectModel {
     pub id: DbTypedUuid<ObjectKind>,
     pub time_created: DateTime<Utc>,
