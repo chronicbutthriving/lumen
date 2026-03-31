@@ -217,7 +217,7 @@ impl From<Error> for HttpError {
                 }
             }
 
-            Error::Forbidden => HttpError::for_client_error(
+            Error::Forbidden { .. } => HttpError::for_client_error(
                 Some(String::from("Forbidden")),
                 dropshot::ClientErrorStatusCode::FORBIDDEN,
                 String::from("Forbidden"),
