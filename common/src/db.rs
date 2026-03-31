@@ -207,8 +207,8 @@ mod tests {
         assert!(db_id.equivalent(&id));
 
         let hasher = RandomState::new();
-        let id_hash = hasher.hash_one(&id);
-        let db_id_hash = hasher.hash_one(&db_id);
+        let id_hash = hasher.hash_one(id);
+        let db_id_hash = hasher.hash_one(db_id);
         assert_eq!(id_hash, db_id_hash);
     }
 
