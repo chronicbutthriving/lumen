@@ -1,0 +1,251 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Storage API",
+    "description": "Storage API for consumption by other internal services.",
+    "contact": {
+      "url": "https://chronicbutthriving.co.uk",
+      "email": "engineering@chronicbutthriving.co.uk"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/objects": {
+      "get": {
+        "tags": [
+          "objects"
+        ],
+        "summary": "List known objects.",
+        "operationId": "list_objects",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Array_of_StorageObject",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StorageObject"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/objects/{id}": {
+      "get": {
+        "tags": [
+          "objects"
+        ],
+        "summary": "Get a specific object by ID.",
+        "operationId": "get_object",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ObjectUuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StorageObject"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/ping": {
+      "get": {
+        "tags": [
+          "system/status"
+        ],
+        "summary": "Check API reachability and basic health.",
+        "operationId": "ping",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ping"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/Error"
+          },
+          "5XX": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "description": "Error information from a response.",
+        "type": "object",
+        "properties": {
+          "error_code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "request_id"
+        ]
+      },
+      "ObjectUuid": {
+        "x-rust-type": {
+          "crate": "lumen-uuid-kinds",
+          "path": "lumen_uuid_kinds::ObjectUuid",
+          "version": "*"
+        },
+        "type": "string",
+        "format": "uuid"
+      },
+      "Ping": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "description": "Whether the storage API is reachable. Will always be Ok if the endpoint returns anything at all.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PingStatus"
+              }
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "PingStatus": {
+        "type": "string",
+        "enum": [
+          "Ok"
+        ]
+      },
+      "StorageObject": {
+        "description": "A storage object represents a file or other piece of data stored in the system.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for this object.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectUuid"
+              }
+            ]
+          },
+          "mime_type": {
+            "description": "The MIME type of the object, if known.",
+            "type": "string"
+          },
+          "provider_kind": {
+            "description": "The kind of storage provider being used for this object.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StorageProviderKind"
+              }
+            ]
+          },
+          "provider_path": {
+            "description": "The path or identifier used by the storage provider to locate this object.",
+            "type": "string"
+          },
+          "time_created": {
+            "description": "The time at which this object was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "time_deleted": {
+            "nullable": true,
+            "description": "The time at which this object was deleted, if it has been deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "time_modified": {
+            "description": "The time at which this object was last modified.",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "mime_type",
+          "provider_kind",
+          "provider_path",
+          "time_created",
+          "time_modified"
+        ]
+      },
+      "StorageProviderKind": {
+        "description": "What kind of storage provider is being used for this object.",
+        "oneOf": [
+          {
+            "description": "The object is stored on the local filesystem of the storage service.",
+            "type": "string",
+            "enum": [
+              "Local"
+            ]
+          }
+        ]
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "objects",
+      "description": "Endpoints related to the storage of objects"
+    },
+    {
+      "name": "system/status",
+      "description": "Endpoints related to system health"
+    }
+  ]
+}
