@@ -42,8 +42,8 @@ impl StorageApi for StorageApiImpl {
             ObjectFilter::new(),
             PaginationParams::default(),
         )
-            .await
-            .map_err(|e| Error::from(e))?;
+        .await
+        .map_err(|e| Error::from(e))?;
 
         Ok(HttpResponseOk(
             result.iter().map(|o| o.to_owned().into()).collect(),
