@@ -13,7 +13,7 @@ runs:
           ~/.cargo/binstall
           ~/.cargo/env
           ~/.rustup
-        key: rust-cache-${{ runner.os }}-${{ hashFiles('.mise.toml') }}
+        key: rust-cache-${{ runner.os }}-${{ hashFiles('mise.toml', 'Cargo.lock') }}
         restore-keys: |
           rust-cache-${{ runner.os }}-
 
