@@ -4,6 +4,9 @@
 
 = Lumen
 
+[link=https://github.com/chronicbutthriving/lumen/actions/workflows/rust.yaml]
+image::https://github.com/chronicbutthriving/lumen/actions/workflows/rust.yaml/badge.svg?branch=main&event=push[Rust]
+
 This repo houses the work-in-progress Lumen project.
 
 == Documentation
