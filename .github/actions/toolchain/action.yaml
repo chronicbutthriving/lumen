@@ -8,7 +8,10 @@ runs:
     - name: Setup Rust caching
       uses: Swatinem/rust-cache@v2
       with:
-        cache-directories: ~/.rustup
+        cache-directories: |
+          /home/runner/.rustup
+          /home/runner/.cargo/binstall
+          /home/runner/.cargo/env
         cache-bin: 'true'
 
     - name: Setup mise
