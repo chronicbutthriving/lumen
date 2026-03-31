@@ -28,7 +28,7 @@ impl StorageApi for StorageApiImpl {
         let result = ObjectStore::must_get(storage.as_ref(), path_params.id)
             .await
             .map_err(|error| {
-                Error::internal_error(format!("couldn't get object: {}", error.to_string()))
+                Error::internal_error(format!("couldn't get object: {}", error))
             })?;
 
         Ok(HttpResponseOk(result.into()))
@@ -46,7 +46,7 @@ impl StorageApi for StorageApiImpl {
         )
         .await
         .map_err(|error| {
-            Error::internal_error(format!("couldn't list objects: {}", error.to_string()))
+            Error::internal_error(format!("couldn't list objects: {}", error))
         })?;
 
         Ok(HttpResponseOk(
