@@ -20,11 +20,6 @@ jobs:
           fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/toolchain
-
-      - name: Report cargo version
-        run: cargo --version
-      - name: Report rustfmt version
-        run: cargo fmt -- --version
       - name: Check style
         run: cargo fmt -- --check
 
@@ -38,11 +33,6 @@ jobs:
           fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/toolchain
-
-      - name: Report cargo version
-        run: cargo --version
-      - name: Report clippy version
-        run: cargo clippy -- --version
       - name: Run clippy lints
         run: cargo xtask clippy
 
@@ -56,9 +46,6 @@ jobs:
           fetch-depth: 0
       - name: Set up toolchain
         uses: ./.github/actions/toolchain
-
-      - name: Report cargo version
-        run: cargo --version
       - name: Report Nextest version
         run: cargo nextest --version
       - name: Run tests
