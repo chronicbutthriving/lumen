@@ -37,7 +37,7 @@ serde_with = { version = "3.14.0", default-features = false, features = ["alloc"
 slog = "2.7"
 slog-async = "2.8"
 thiserror = "2.0"
-tokio = "1.47.0"
+tokio = "1.50.0"
 toml = "0.8.23"
 url = "2.5.4"
 uuid = { version = "1.17.0", features = ["serde", "v4"] }
