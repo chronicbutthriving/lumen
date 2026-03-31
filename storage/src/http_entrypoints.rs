@@ -27,7 +27,7 @@ impl StorageApi for StorageApiImpl {
 
         let result = ObjectStore::must_get(storage.as_ref(), path_params.id)
             .await
-            .map_err(|e| Error::from(e))?;
+            .map_err(Error::from)?;
 
         Ok(HttpResponseOk(result.into()))
     }
@@ -43,7 +43,7 @@ impl StorageApi for StorageApiImpl {
             PaginationParams::default(),
         )
         .await
-        .map_err(|e| Error::from(e))?;
+        .map_err(Error::from)?;
 
         Ok(HttpResponseOk(
             result.iter().map(|o| o.to_owned().into()).collect(),
