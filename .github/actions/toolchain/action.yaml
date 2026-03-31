@@ -10,7 +10,6 @@ runs:
       with:
         cache-directories: ~/.rustup
         cache-bin: 'true'
-        save-if: ${{ github.ref != 'refs/heads/main' }}
 
     - name: Setup mise
       uses: jdx/mise-action@v4
