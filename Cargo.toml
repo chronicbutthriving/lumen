@@ -5,9 +5,9 @@ members = [
   "dev-tools/dropshot-apis",
   "dev-tools/xtask",
   "storage",
-  "storage-api",
-  "storage-types",
-  "storage-types/versions",
+  "storage/api",
+  "storage/types",
+  "storage/types/versions",
   "uuid-kinds"
 ]
 
@@ -26,9 +26,9 @@ dropshot-api-manager-types = "0.6.0"
 http = "1.3.1"
 httptest = "0.16.3"
 lumen-common = { path = "common" }
-lumen-storage-api = { path = "storage-api" }
-lumen-storage-types = { path = "storage-types" }
-lumen-storage-types-versions = { path = "storage-types/versions" }
+lumen-storage-api = { path = "storage/api" }
+lumen-storage-types = { path = "storage/types" }
+lumen-storage-types-versions = { path = "storage/types/versions" }
 parse-display = "0.10.0"
 schemars = "0.8.22"
 serde = { version = "1.0", default-features = false, features = ["derive", "rc"] }
