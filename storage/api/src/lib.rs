@@ -18,13 +18,34 @@ api_versions!([(1, INITIAL),]);
 pub trait StorageApi {
     type Context;
 
+    /// List known objects.
+    #[endpoint(
+        method = GET,
+        path = "/objects",
+        tags = ["objects"]
+    )]
+    async fn list_objects(
+        rqctx: RequestContext<Self::Context>,
+    ) -> Result<HttpResponseOk<Vec<latest::object::StorageObject>>, HttpError>;
+
+    /// Get a specific object by ID.
+    #[endpoint(
+        method = GET,
+        path = "/objects/{id}",
+        tags = ["objects"],
+    )]
+    async fn get_object(
+        rqctx: RequestContext<Self::Context>,
+        path_params: dropshot::Path<latest::object::GetObjectParams>,
+    ) -> Result<HttpResponseOk<latest::object::StorageObject>, HttpError>;
+
     /// Check API reachability and basic health.
     #[endpoint(
         method = GET,
-        path = "/v1/ping",
+        path = "/ping",
         tags = ["system/status"]
     )]
     async fn ping(
-        _rqctx: RequestContext<Self::Context>,
+        rqctx: RequestContext<Self::Context>,
     ) -> Result<HttpResponseOk<latest::system::Ping>, HttpError>;
 }

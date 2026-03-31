@@ -5,5 +5,8 @@ license.workspace = true
 edition.workspace = true
 
 [dependencies]
+chrono.workspace = true
 serde.workspace = true
 schemars.workspace = true
+lumen-common.workspace = true
+lumen-uuid-kinds.workspace = true

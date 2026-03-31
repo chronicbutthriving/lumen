@@ -1647,6 +1647,7 @@ dependencies = [
  "diesel",
  "diesel-enums",
  "lumen-common",
+ "lumen-storage-types-versions",
  "lumen-uuid-kinds",
  "serde",
  "thiserror 2.0.18",
@@ -1660,6 +1661,9 @@ version = "0.1.0"
 name = "lumen-storage-types-versions"
 version = "0.1.0"
 dependencies = [
+ "chrono",
+ "lumen-common",
+ "lumen-uuid-kinds",
  "schemars",
  "serde",
 ]

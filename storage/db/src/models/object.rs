@@ -6,6 +6,7 @@ use diesel::{
 };
 use diesel_enums::pg_enum;
 use lumen_common::db::DbTypedUuid;
+use lumen_storage_types_versions::v2026_03_31_00::object;
 use lumen_uuid_kinds::{ObjectKind, ObjectUuid};
 
 #[pg_enum]
@@ -63,5 +64,21 @@ impl ObjectModel {
 
     pub fn mark_deleted(&mut self) {
         self.time_deleted = Some(Utc::now());
+    }
+}
+
+impl From<ObjectModel> for object::StorageObject {
+    fn from(model: ObjectModel) -> Self {
+        Self {
+            id: model.id.into(),
+            time_created: model.time_created,
+            time_modified: model.time_modified,
+            time_deleted: model.time_deleted,
+            provider_kind: match model.provider_kind {
+                StorageProviderKind::Local => object::StorageProviderKind::Local,
+            },
+            provider_path: model.provider_path,
+            mime_type: model.mime_type,
+        }
     }
 }

@@ -3,6 +3,7 @@ use lumen_common::{api::external::ResourceType, db::PaginationParams};
 use lumen_uuid_kinds::ObjectUuid;
 
 use crate::{
+    dbs::MockStore,
     error::{StoreError, StoreResult},
     models::{ObjectModel, StorageProviderKind},
 };
@@ -65,7 +66,7 @@ pub trait ObjectStore {
 }
 
 #[async_trait]
-impl ObjectStore for crate::dbs::MockStore {
+impl ObjectStore for MockStore {
     async fn list(
         &self,
         filter: ObjectFilter,
