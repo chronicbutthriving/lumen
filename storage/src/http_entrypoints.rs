@@ -42,10 +42,8 @@ impl StorageApi for StorageApiImpl {
             ObjectFilter::new(),
             PaginationParams::default(),
         )
-        .await
-        .map_err(|error| {
-            Error::internal_error(format!("couldn't list objects: {}", error))
-        })?;
+            .await
+            .map_err(|e| Error::from(e))?;
 
         Ok(HttpResponseOk(
             result.iter().map(|o| o.to_owned().into()).collect(),
