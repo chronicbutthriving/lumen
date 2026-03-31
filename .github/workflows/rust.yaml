@@ -61,5 +61,5 @@ jobs:
         run: cargo --version
       - name: Report Nextest version
         run: cargo nextest --version
-      - name: Run clippy lints
+      - name: Run tests
         run: cargo nextest run --workspace --all-features
