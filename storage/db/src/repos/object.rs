@@ -2,7 +2,10 @@ use async_trait::async_trait;
 use lumen_common::{api::external::ResourceType, db::PaginationParams};
 use lumen_uuid_kinds::ObjectUuid;
 
-use crate::{error::{StoreError, StoreResult}, models::{ObjectModel, StorageProviderKind}};
+use crate::{
+    error::{StoreError, StoreResult},
+    models::{ObjectModel, StorageProviderKind},
+};
 
 pub struct ObjectFilter {
     pub ids: Option<Vec<ObjectUuid>>,
@@ -50,18 +53,16 @@ pub trait ObjectStore {
             ObjectFilter::new().with_ids(vec![id]),
             PaginationParams::default().with_limit(1),
         )
-            .await
-            .map(|obj| obj.first().cloned())
+        .await
+        .map(|obj| obj.first().cloned())
     }
 
     /// Gets the object with the specified ID, returning an error if it doesn't
     /// exist.
     async fn must_get(&self, id: ObjectUuid) -> StoreResult<ObjectModel> {
-        self.get(id)
-            .await?
-            .ok_or(StoreError::NoResults {
-                resource_type: ResourceType::Object
-            })
+        self.get(id).await?.ok_or(StoreError::NoResults {
+            resource_type: ResourceType::Object,
+        })
     }
 
     /// Lists objects matching the specified filter criteria.

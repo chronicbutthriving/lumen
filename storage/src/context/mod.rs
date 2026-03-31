@@ -5,9 +5,7 @@ pub struct Context {
 }
 
 impl Context {
-    pub fn new(
-        storage: impl lumen_storage_db::dbs::StorageStore,
-    ) -> Self {
+    pub fn new(storage: impl lumen_storage_db::dbs::StorageStore) -> Self {
         Self {
             storage: Arc::new(storage),
         }

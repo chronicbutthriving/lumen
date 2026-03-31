@@ -18,7 +18,9 @@ pub type StoreResult<T> = Result<T, StoreError>;
 impl From<StoreError> for ApiError {
     fn from(err: StoreError) -> ApiError {
         match err {
-            StoreError::NoResults { resource_type } => ApiError::ObjectNotFound { type_name: resource_type },
+            StoreError::NoResults { resource_type } => ApiError::ObjectNotFound {
+                type_name: resource_type,
+            },
             StoreError::Conflict => ApiError::invalid_request(err.to_string()),
             StoreError::Internal(e) => ApiError::internal_error(e.to_string()),
         }

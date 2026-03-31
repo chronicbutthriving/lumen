@@ -1,7 +1,7 @@
+use super::external::{CargoLocation, cargo_command};
 use crate::common::run_subcmd;
 use anyhow::Result;
 use clap::Parser;
-use super::external::{CargoLocation, cargo_command};
 
 #[derive(Parser)]
 pub struct ClippyArgs {

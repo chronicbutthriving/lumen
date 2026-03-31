@@ -6,13 +6,7 @@ use lumen_uuid_kinds::ObjectUuid;
 
 use crate::{models::ObjectModel, repos::ObjectStore};
 
-pub trait StorageStore:
-    ObjectStore
-    + Send
-    + Sync
-    + 'static
-{
-}
+pub trait StorageStore: ObjectStore + Send + Sync + 'static {}
 
 pub struct MockStore {
     pub objects: HashMap<ObjectUuid, ObjectModel>,
@@ -26,10 +20,4 @@ impl MockStore {
     }
 }
 
-impl<T> StorageStore for T where
-    T: ObjectStore
-    + Send
-    + Sync
-    + 'static
-{
-}
+impl<T> StorageStore for T where T: ObjectStore + Send + Sync + 'static {}

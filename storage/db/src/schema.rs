@@ -60,8 +60,4 @@ diesel::table! {
 diesel::joinable!(auth_user_password -> auth_user (user_id));
 diesel::joinable!(auth_user_provider -> auth_user (user_id));
 
-diesel::allow_tables_to_appear_in_same_query!(
-    auth_user,
-    auth_user_password,
-    auth_user_provider,
-);
+diesel::allow_tables_to_appear_in_same_query!(auth_user, auth_user_password, auth_user_provider,);

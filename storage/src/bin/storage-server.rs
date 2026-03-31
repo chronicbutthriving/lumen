@@ -1,6 +1,6 @@
 use std::{net::SocketAddr, path::PathBuf};
 
-use anyhow::{anyhow, Context};
+use anyhow::{Context, anyhow};
 use clap::Parser;
 use serde::Deserialize;
 use slog::info;
@@ -41,10 +41,7 @@ async fn main() -> Result<(), anyhow::Error> {
         "config" => ?config,
     );
 
-    let dropshot_server = lumen_storage::start_server(
-        log,
-        &config.dropshot
-    ).await?;
+    let dropshot_server = lumen_storage::start_server(log, &config.dropshot).await?;
 
     dropshot_server
         .await

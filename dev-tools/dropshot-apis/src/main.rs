@@ -1,4 +1,4 @@
-use std::{process::ExitCode};
+use std::process::ExitCode;
 
 use anyhow::Context;
 use camino::Utf8PathBuf;
@@ -15,31 +15,23 @@ fn environment() -> anyhow::Result<Environment> {
         .parent()
         .unwrap()
         .to_path_buf();
-    let env = Environment::new(
-        "cargo xtask openapi",
-        workspace_root,
-        "openapi",
-    )?;
+    let env = Environment::new("cargo xtask openapi", workspace_root, "openapi")?;
     Ok(env)
 }
 
 fn all_apis() -> anyhow::Result<ManagedApis> {
-    let apis = vec![
-        ManagedApi::from(ManagedApiConfig {
-            title: "Storage API",
-            versions: Versions::new_versioned(
-                lumen_storage_api::supported_versions(),
-            ),
-            metadata: ManagedApiMetadata {
-                description: Some("Storage API for consumption by other internal services."),
-                contact_url: Some("https://chronicbutthriving.co.uk"),
-                contact_email: Some("engineering@chronicbutthriving.co.uk"),
-                extra: to_value(ApiBoundary::Internal),
-            },
-            api_description: storage_api_mod::stub_api_description,
-            ident: "storage",
-        })
-    ];
+    let apis = vec![ManagedApi::from(ManagedApiConfig {
+        title: "Storage API",
+        versions: Versions::new_versioned(lumen_storage_api::supported_versions()),
+        metadata: ManagedApiMetadata {
+            description: Some("Storage API for consumption by other internal services."),
+            contact_url: Some("https://chronicbutthriving.co.uk"),
+            contact_email: Some("engineering@chronicbutthriving.co.uk"),
+            extra: to_value(ApiBoundary::Internal),
+        },
+        api_description: storage_api_mod::stub_api_description,
+        ident: "storage",
+    })];
 
     let apis = ManagedApis::new(apis)
         .context("error creating ManagedApis")?

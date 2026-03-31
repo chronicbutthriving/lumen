@@ -91,10 +91,7 @@ where
     DB: Backend,
     Uuid: ToSql<sql_types::Uuid, DB>,
 {
-    fn to_sql<'a>(
-        &'a self,
-        out: &mut serialize::Output<'a, '_, DB>,
-    ) -> serialize::Result {
+    fn to_sql<'a>(&'a self, out: &mut serialize::Output<'a, '_, DB>) -> serialize::Result {
         self.0.as_untyped_uuid().to_sql(out)
     }
 }

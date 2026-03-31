@@ -1,9 +1,12 @@
+use crate::schema::storage_object;
 use chrono::{DateTime, Utc};
-use diesel::{Selectable, prelude::{Insertable, Queryable}};
+use diesel::{
+    Selectable,
+    prelude::{Insertable, Queryable},
+};
 use diesel_enums::pg_enum;
 use lumen_common::db::DbTypedUuid;
 use lumen_uuid_kinds::{ObjectKind, ObjectUuid};
-use crate::schema::storage_object;
 
 #[pg_enum]
 #[db(
@@ -55,7 +58,7 @@ impl ObjectModel {
             provider_kind,
             provider_path,
             mime_type,
-        }       
+        }
     }
 
     pub fn mark_deleted(&mut self) {

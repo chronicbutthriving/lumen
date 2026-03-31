@@ -15,17 +15,17 @@ pub async fn start_server(
     let server = dropshot::ServerBuilder::new(
         http_api,
         http_api_context,
-        log.new(o!("component" => "http"))
+        log.new(o!("component" => "http")),
     )
-        .config(dropshot_config.clone())
-        .version_policy(dropshot::VersionPolicy::Dynamic(Box::new(
-            dropshot::ClientSpecifiesVersionInHeader::new(
-                lumen_common::api::VERSION_HEADER,
-                lumen_storage_api::VERSION_INITIAL,
-            ),
-        )))
-        .start()
-        .map_err(|error| anyhow!("setting up HTTP server: {:#}", error))?;
+    .config(dropshot_config.clone())
+    .version_policy(dropshot::VersionPolicy::Dynamic(Box::new(
+        dropshot::ClientSpecifiesVersionInHeader::new(
+            lumen_common::api::VERSION_HEADER,
+            lumen_storage_api::VERSION_INITIAL,
+        ),
+    )))
+    .start()
+    .map_err(|error| anyhow!("setting up HTTP server: {:#}", error))?;
 
     Ok(server)
 }

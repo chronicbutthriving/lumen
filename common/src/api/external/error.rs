@@ -52,14 +52,17 @@ pub struct MessagePair {
 
 impl MessagePair {
     pub fn new(external_message: String) -> Self {
-        Self { external_message, internal_context: String::new() }
+        Self {
+            external_message,
+            internal_context: String::new(),
+        }
     }
 
-    pub fn new_full(
-        external_message: String,
-        internal_context: String,
-    ) -> Self {
-        Self { external_message, internal_context }
+    pub fn new_full(external_message: String, internal_context: String) -> Self {
+        Self {
+            external_message,
+            internal_context,
+        }
     }
 
     pub fn external_message(&self) -> &str {
@@ -91,7 +94,6 @@ impl MessagePair {
         MessagePairDisplayInternal(self)
     }
 }
-
 
 struct MessagePairDisplayInternal<'a>(&'a MessagePair);
 
@@ -130,7 +132,9 @@ impl Error {
     /// deserializing a value from the database, or finding two records for
     /// something that is supposed to be unique).
     pub fn internal_error(internal_message: impl Into<String>) -> Error {
-        Error::InternalError { internal_message: internal_message.into() }
+        Error::InternalError {
+            internal_message: internal_message.into(),
+        }
     }
 
     /// Generates an [`Error::InvalidRequest`] error with the specific message
@@ -138,15 +142,14 @@ impl Error {
     /// This should be used for failures due possibly to invalid client input
     /// or malformed requests.
     pub fn invalid_request(message: impl Into<String>) -> Error {
-        Error::InvalidRequest { message: MessagePair::new(message.into()) }
+        Error::InvalidRequest {
+            message: MessagePair::new(message.into()),
+        }
     }
 
     /// Generates an [`Error::InvalidValue`] error with the specific label and
     /// message
-    pub fn invalid_value(
-        label: impl Into<String>,
-        message: impl Into<String>,
-    ) -> Error {
+    pub fn invalid_value(label: impl Into<String>, message: impl Into<String>) -> Error {
         Error::InvalidValue {
             label: label.into(),
             message: MessagePair::new(message.into()),
@@ -161,41 +164,36 @@ impl Error {
     /// retry might not work should probably be an InternalError (if it's a
     /// server problem) or InvalidRequest (if it's a client problem) instead.
     pub fn unavail(message: &str) -> Error {
-        Error::ServiceUnavailable { internal_message: message.to_owned() }
+        Error::ServiceUnavailable {
+            internal_message: message.to_owned(),
+        }
     }
 }
 
 impl From<Error> for HttpError {
     fn from(error: Error) -> HttpError {
         match error {
-            Error::ObjectNotFound { type_name } => {
-                HttpError::for_client_error(
-                    Some(String::from("ObjectNotFound")),
-                    dropshot::ClientErrorStatusCode::NOT_FOUND,
-                    format!("not found: {}", type_name.to_string()),
-                )
-            },
+            Error::ObjectNotFound { type_name } => HttpError::for_client_error(
+                Some(String::from("ObjectNotFound")),
+                dropshot::ClientErrorStatusCode::NOT_FOUND,
+                format!("not found: {}", type_name.to_string()),
+            ),
 
-            Error::ObjectAlreadyExists { type_name } => {
-                HttpError::for_bad_request(
-                    Some(String::from("ObjectAlreadyExists")),
-                    format!("object already exists: {}", type_name.to_string()),
-                )
-            },
+            Error::ObjectAlreadyExists { type_name } => HttpError::for_bad_request(
+                Some(String::from("ObjectAlreadyExists")),
+                format!("object already exists: {}", type_name.to_string()),
+            ),
 
             Error::Unauthenticated { internal_message } => HttpError {
                 status_code: dropshot::ErrorStatusCode::UNAUTHORIZED,
                 error_code: Some(String::from("Unauthorized")),
-                external_message: String::from(
-                    "credentials invalid or missing",
-                ),
+                external_message: String::from("credentials invalid or missing"),
                 internal_message,
                 headers: None,
             },
 
             Error::InvalidRequest { message } => {
-                let (internal_message, external_message) =
-                    message.into_internal_external();
+                let (internal_message, external_message) = message.into_internal_external();
                 HttpError {
                     status_code: dropshot::ErrorStatusCode::BAD_REQUEST,
                     error_code: Some(String::from("InvalidRequest")),
@@ -206,8 +204,7 @@ impl From<Error> for HttpError {
             }
 
             Error::InvalidValue { label, message } => {
-                let (internal_message, external_message) =
-                    message.into_internal_external();
+                let (internal_message, external_message) = message.into_internal_external();
                 HttpError {
                     status_code: dropshot::ErrorStatusCode::BAD_REQUEST,
                     error_code: Some(String::from("InvalidValue")),
@@ -226,19 +223,16 @@ impl From<Error> for HttpError {
                 String::from("Forbidden"),
             ),
 
-            Error::InternalError { internal_message } =>
-                HttpError::for_internal_error(internal_message),
+            Error::InternalError { internal_message } => {
+                HttpError::for_internal_error(internal_message)
+            }
 
             Error::ServiceUnavailable { internal_message } => {
-                HttpError::for_unavail(
-                    Some(String::from("ServiceNotAvailable")),
-                    internal_message,
-                )
+                HttpError::for_unavail(Some(String::from("ServiceNotAvailable")), internal_message)
             }
 
             Error::NotFound { message } => {
-                let (internal_message, external_message) =
-                    message.into_internal_external();
+                let (internal_message, external_message) = message.into_internal_external();
                 HttpError {
                     status_code: dropshot::ErrorStatusCode::NOT_FOUND,
                     error_code: Some(String::from("Not Found")),

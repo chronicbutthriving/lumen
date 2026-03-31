@@ -2,9 +2,7 @@ use dropshot::{EndpointTagPolicy, HttpError, HttpResponseOk, RequestContext};
 use dropshot_api_manager_types::api_versions;
 use lumen_storage_types_versions::latest;
 
-api_versions!([
-    (1, INITIAL),
-]);
+api_versions!([(1, INITIAL),]);
 
 #[dropshot::api_description {
     tag_config = {

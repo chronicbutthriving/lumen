@@ -17,9 +17,14 @@ impl StorageApi for StorageApiImpl {
 
     async fn ping(
         _rqctx: dropshot::RequestContext<Self::Context>,
-    ) -> Result<dropshot::HttpResponseOk<lumen_storage_types_versions::latest::system::Ping>, dropshot::HttpError> {
-        Ok(dropshot::HttpResponseOk(lumen_storage_types_versions::latest::system::Ping {
-            status: lumen_storage_types_versions::latest::system::PingStatus::Ok,
-        }))
+    ) -> Result<
+        dropshot::HttpResponseOk<lumen_storage_types_versions::latest::system::Ping>,
+        dropshot::HttpError,
+    > {
+        Ok(dropshot::HttpResponseOk(
+            lumen_storage_types_versions::latest::system::Ping {
+                status: lumen_storage_types_versions::latest::system::PingStatus::Ok,
+            },
+        ))
     }
 }

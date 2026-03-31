@@ -53,5 +53,3 @@ pub struct IdentityMetadata {
     pub time_created: DateTime<Utc>,
     pub time_updated: DateTime<Utc>,
 }
-
-
