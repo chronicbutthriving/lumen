@@ -22,7 +22,6 @@ use uuid::Uuid;
 /// Code external to the `db-model` crate sometimes needs a way to convert a
 /// `TypedUuid` to a `DbTypedUuid`. We don't want `DbTypedUuid` to be used
 /// anywhere, so we don't make it public. Instead, we expose this function.
-#[cfg(feature = "diesel")]
 #[inline]
 pub fn to_db_typed_uuid<T: TypedUuidKind>(id: TypedUuid<T>) -> DbTypedUuid<T> {
     DbTypedUuid(id)
@@ -33,14 +32,12 @@ pub fn to_db_typed_uuid<T: TypedUuidKind>(id: TypedUuid<T>) -> DbTypedUuid<T> {
 /// Despite the fact that this is marked `pub`, this is *private* to the
 /// `db-model` crate (this type is not exported at the top level). External
 /// users must use omicron-common's `TypedUuid`.
-#[cfg(feature = "diesel")]
 #[derive_where(Clone, Copy, Eq, Ord, PartialEq, PartialOrd, Hash)]
 #[derive(AsExpression, FromSqlRow, Serialize, Deserialize, JsonSchema)]
 #[diesel(sql_type = sql_types::Uuid)]
 #[serde(transparent, bound = "")]
-pub struct DbTypedUuid<T: TypedUuidKind>(pub(crate) TypedUuid<T>);
+pub struct DbTypedUuid<T: TypedUuidKind>(pub TypedUuid<T>);
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind, DB> ToSql<sql_types::Uuid, DB> for DbTypedUuid<T>
 where
     DB: Backend,
@@ -51,7 +48,6 @@ where
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind, DB> FromSql<sql_types::Uuid, DB> for DbTypedUuid<T>
 where
     DB: Backend,
@@ -64,7 +60,6 @@ where
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind> fmt::Debug for DbTypedUuid<T> {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -72,7 +67,6 @@ impl<T: TypedUuidKind> fmt::Debug for DbTypedUuid<T> {
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind> fmt::Display for DbTypedUuid<T> {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -80,7 +74,6 @@ impl<T: TypedUuidKind> fmt::Display for DbTypedUuid<T> {
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind> FromStr for DbTypedUuid<T> {
     type Err = lumen_uuid_kinds::ParseError;
 
@@ -90,7 +83,6 @@ impl<T: TypedUuidKind> FromStr for DbTypedUuid<T> {
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind> From<TypedUuid<T>> for DbTypedUuid<T> {
     #[inline]
     fn from(id: TypedUuid<T>) -> Self {
@@ -98,7 +90,6 @@ impl<T: TypedUuidKind> From<TypedUuid<T>> for DbTypedUuid<T> {
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind> From<DbTypedUuid<T>> for TypedUuid<T> {
     #[inline]
     fn from(id: DbTypedUuid<T>) -> Self {
@@ -106,7 +97,6 @@ impl<T: TypedUuidKind> From<DbTypedUuid<T>> for TypedUuid<T> {
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind> GenericUuid for DbTypedUuid<T> {
     #[inline]
     fn from_untyped_uuid(uuid: Uuid) -> Self {
@@ -124,7 +114,6 @@ impl<T: TypedUuidKind> GenericUuid for DbTypedUuid<T> {
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind> Equivalent<TypedUuid<T>> for DbTypedUuid<T> {
     #[inline]
     fn equivalent(&self, other: &TypedUuid<T>) -> bool {
@@ -132,7 +121,6 @@ impl<T: TypedUuidKind> Equivalent<TypedUuid<T>> for DbTypedUuid<T> {
     }
 }
 
-#[cfg(feature = "diesel")]
 impl<T: TypedUuidKind> Comparable<TypedUuid<T>> for DbTypedUuid<T> {
     #[inline]
     fn compare(&self, key: &TypedUuid<T>) -> std::cmp::Ordering {
@@ -143,19 +131,12 @@ impl<T: TypedUuidKind> Comparable<TypedUuid<T>> for DbTypedUuid<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[cfg(feature = "diesel")]
     use lumen_uuid_kinds::ObjectUuid;
-
-    #[cfg(feature = "diesel")]
     use std::hash::{BuildHasher, RandomState};
-
-    #[cfg(feature = "diesel")]
     use test_strategy::proptest;
 
     /// Test that the `Hash` implementation is consistent, as required by
     /// `Equivalent`.
-    #[cfg(feature = "diesel")]
     #[proptest]
     fn test_hash_equality(id: ObjectUuid) {
         let db_id = DbTypedUuid::from(id);
@@ -169,7 +150,6 @@ mod tests {
 
     /// Test that the `compare` implementation is consistent, as required by
     /// `Comparable`.
-    #[cfg(feature = "diesel")]
     #[proptest]
     fn test_compare_consistency(id1: ObjectUuid, id2: ObjectUuid) {
         let db_id1 = DbTypedUuid::from(id1);

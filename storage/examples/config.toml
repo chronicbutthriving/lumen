@@ -9,6 +9,15 @@ url = "postgresql://lumen:lumen@localhost:5432/lumen?sslmode=disable"
 # The maximum number of connections to the database to allow when pooling.
 max_conns = 10
 
+# How long to wait before timing out when connecting to the database.
+#connect_timeout = "5s"
+
+# How long to wait before timing out when waiting for a connection from the pool.
+#wait_timeout = "15s"
+
+# How long to wait before timing out when trying to recycle a connection from the pool.
+#recycle_timeout = "15s"
+
 # Example of a storage provider for local files
 [[storage.providers.local]]
 active = true

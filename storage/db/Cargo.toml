@@ -8,6 +8,7 @@ edition.workspace = true
 anyhow.workspace = true
 async-trait.workspace = true
 diesel.workspace = true
+diesel-async.workspace = true
 diesel-enums.workspace = true
 chrono.workspace = true
 lumen-uuid-kinds.workspace = true

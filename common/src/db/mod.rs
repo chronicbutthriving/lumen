@@ -2,6 +2,9 @@
 pub mod schema;
 
 #[cfg(feature = "diesel")]
+pub mod pool;
+
+#[cfg(feature = "diesel")]
 mod db_typed_uuid;
 #[cfg(feature = "diesel")]
 pub use db_typed_uuid::*;

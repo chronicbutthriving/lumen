@@ -16,6 +16,7 @@ struct Args {
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
+    pub database: lumen_common::db::pool::DatabaseConfig,
     pub log: dropshot::ConfigLogging,
     pub dropshot: dropshot::ConfigDropshot,
 }
@@ -41,7 +42,11 @@ async fn main() -> Result<(), anyhow::Error> {
         "config" => ?config,
     );
 
-    let dropshot_server = lumen_storage::start_server(log, &config.dropshot).await?;
+    let dropshot_server = lumen_storage::start_server(
+        log,
+        &config.dropshot,
+        config.database
+    ).await?;
 
     dropshot_server
         .await

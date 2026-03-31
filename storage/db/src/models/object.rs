@@ -8,17 +8,19 @@ use lumen_common::db::schema;
 use lumen_common::db::DbTypedUuid;
 use lumen_storage_types_versions::v2026_03_31_00::object;
 use lumen_uuid_kinds::{ObjectKind, ObjectUuid};
+use serde::{Deserialize, Serialize};
 
 #[pg_enum]
 #[db(
     sql_type = schema::sql_types::StorageProviderKind,
     skip_test
 )]
+#[derive(Serialize, Deserialize)]
 pub enum StorageProviderKind {
     Local,
 }
 
-#[derive(Debug, Clone, Queryable, Insertable, Selectable)]
+#[derive(Debug, Clone, Queryable, Insertable, Selectable, Serialize, Deserialize)]
 #[diesel(table_name = schema::storage_object)]
 pub struct ObjectModel {
     pub id: DbTypedUuid<ObjectKind>,

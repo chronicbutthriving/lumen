@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use lumen_storage_db::dbs::MockStore;
+use lumen_storage_db::dbs::PgStore;
 use slog::o;
 
 mod context;
@@ -8,9 +8,12 @@ mod http_entrypoints;
 pub async fn start_server(
     log: slog::Logger,
     dropshot_config: &dropshot::ConfigDropshot,
+    database_config: lumen_common::db::pool::DatabaseConfig,
 ) -> Result<dropshot::HttpServer<context::Context>, anyhow::Error> {
+    let store = PgStore::open(database_config).await?;
+
     let http_api = http_entrypoints::api();
-    let http_api_context = context::Context::new(MockStore::new());
+    let http_api_context = context::Context::new(store);
 
     let server = dropshot::ServerBuilder::new(
         http_api,

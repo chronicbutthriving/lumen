@@ -9,6 +9,9 @@ pub enum StoreError {
     #[error("There was a conflict with the current state of the database")]
     Conflict,
 
+    #[error("Database pool error: {0}")]
+    PoolError(#[from] lumen_common::db::pool::DbPoolError),
+
     #[error("Internal error: {0}")]
     Internal(anyhow::Error),
 }
@@ -23,6 +26,7 @@ impl From<StoreError> for ApiError {
             },
             StoreError::Conflict => ApiError::invalid_request(err.to_string()),
             StoreError::Internal(e) => ApiError::internal_error(e.to_string()),
+            StoreError::PoolError(e) => ApiError::internal_error(e.to_string()),
         }
     }
 }

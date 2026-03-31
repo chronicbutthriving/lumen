@@ -1,9 +1,10 @@
+use anyhow::anyhow;
 use async_trait::async_trait;
-use lumen_common::{api::external::ResourceType, db::PaginationParams};
-use lumen_uuid_kinds::ObjectUuid;
+use lumen_common::{api::external::ResourceType, db::{PaginationParams, schema::{self, storage_object}}};
+use lumen_uuid_kinds::{GenericUuid, ObjectUuid};
 
 use crate::{
-    dbs::MockStore,
+    dbs::{MockStore, PgStore},
     error::{StoreError, StoreResult},
     models::{ObjectModel, StorageProviderKind},
 };
@@ -93,6 +94,51 @@ impl ObjectStore for MockStore {
         if let Some(limit) = pagination.limit {
             results.truncate(limit as usize);
         }
+
+        Ok(results)
+    }
+}
+
+#[async_trait]
+impl ObjectStore for PgStore {
+    async fn list(
+        &self,
+        filter: ObjectFilter,
+        pagination: PaginationParams,
+    ) -> StoreResult<Vec<ObjectModel>> {
+        use diesel::{ExpressionMethods, QueryDsl};
+        use diesel_async::RunQueryDsl;
+
+        let mut query = schema::storage_object::table.into_boxed();
+
+        let ObjectFilter {
+            ids,
+            provider_kinds,
+            deleted,
+        } = filter;
+
+        if let Some(ids) = ids {
+            query = query.filter(storage_object::id.eq_any(ids.into_iter().map(|id| id.into_untyped_uuid())));
+        }
+
+        if let Some(provider_kinds) = provider_kinds {
+            query = query.filter(storage_object::provider_kind.eq_any(provider_kinds));
+        }
+
+        if !deleted {
+            query = query.filter(storage_object::time_deleted.is_null());
+        }
+
+        let mut conn = self.conn().await?;
+
+        query = query
+            .offset(pagination.offset.unwrap_or(0) as i64)
+            .limit(pagination.limit.unwrap_or(50) as i64);
+
+        let results: Vec<ObjectModel> = query
+            .get_results(&mut conn)
+            .await
+            .map_err(|e| StoreError::Internal(anyhow!("Failed to query objects: {e}")))?;
 
         Ok(results)
     }
