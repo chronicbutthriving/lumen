@@ -14,3 +14,16 @@ serde.workspace = true
 serde_with.workspace = true
 parse-display.workspace = true
 uuid.workspace = true
+derive-where.workspace = true
+iddqd.workspace = true
+diesel = { workspace = true, optional = true }
+lumen-uuid-kinds.workspace = true
+
+[dev-dependencies]
+test-strategy.workspace = true
+proptest.workspace = true
+lumen-uuid-kinds = { workspace = true, features = ["testing"] }
+
+[features]
+default = []
+diesel = ["dep:diesel"]

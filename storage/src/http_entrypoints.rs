@@ -1,22 +1,19 @@
+use dropshot::ApiDescription;
 use lumen_storage_api::StorageApi;
 
-pub struct Context {}
+use crate::context::Context;
 
-impl Context {
-    pub fn new() -> Self {
-        Self {}
-    }
-}
+pub type StorageApiDescription = ApiDescription<Context>;
 
-pub fn api() -> dropshot::ApiDescription<Context> {
+pub fn api() -> StorageApiDescription {
     lumen_storage_api::storage_api_mod::api_description::<StorageApiImpl>()
         .expect("registered storage server endpoints")
 }
 
-enum StorageApiImpl {}
+pub enum StorageApiImpl {}
 
 impl StorageApi for StorageApiImpl {
-    type Context = Context;
+    type Context = super::context::Context;
 
     async fn ping(
         _rqctx: dropshot::RequestContext<Self::Context>,

@@ -1,14 +1,16 @@
 use anyhow::anyhow;
+use lumen_storage_db::dbs::MockStore;
 use slog::o;
 
-mod server;
+mod context;
+mod http_entrypoints;
 
 pub async fn start_server(
     log: slog::Logger,
     dropshot_config: &dropshot::ConfigDropshot,
-) -> Result<dropshot::HttpServer<server::Context>, anyhow::Error> {
-    let http_api = server::api();
-    let http_api_context = server::Context::new();
+) -> Result<dropshot::HttpServer<context::Context>, anyhow::Error> {
+    let http_api = http_entrypoints::api();
+    let http_api_context = context::Context::new(MockStore::new());
 
     let server = dropshot::ServerBuilder::new(
         http_api,

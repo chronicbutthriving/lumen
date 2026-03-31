@@ -1,0 +1,16 @@
+[package]
+name = "lumen-storage-db"
+version = "0.1.0"
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+diesel.workspace = true
+diesel-enums.workspace = true
+chrono.workspace = true
+lumen-uuid-kinds.workspace = true
+lumen-common = { workspace = true, features = ["diesel"] }
+serde.workspace = true
+thiserror.workspace = true

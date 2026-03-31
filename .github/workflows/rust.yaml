@@ -39,3 +39,22 @@ jobs:
         run: cargo clippy -- --version
       - name: Run clippy lints
         run: cargo xtask clippy
+
+  test:
+    runs-on: ubuntu-22.04
+    env:
+      CARGO_INCREMENTAL: 0
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: Swatinem/rust-cache@v2
+        if: ${{ github.ref != 'refs/heads/main' }}
+      - name: Report cargo version
+        run: cargo --version
+      - name: Install Nextest
+        run: cargo install cargo-nextest
+      - name: Report Nextest version
+        run: cargo nextest --version
+      - name: Run clippy lints
+        run: cargo nextest run --workspace --all-features

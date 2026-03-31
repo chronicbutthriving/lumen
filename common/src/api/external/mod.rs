@@ -42,6 +42,9 @@ pub type OptionalGetResult<T> = Result<Option<T>, Error>;
 #[display(style = "kebab-case")]
 pub enum ResourceType {
     User,
+    UserProvider,
+    UserPassword,
+    Object,
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize, JsonSchema)]

@@ -7,10 +7,12 @@ edition.workspace = true
 [dependencies]
 newtype-uuid.workspace = true
 newtype-uuid-macros.workspace = true
+proptest = { workspace = true, optional = true }
 schemars = { workspace = true, optional = true }
 
 [features]
 default = []
 serde = ["newtype-uuid/serde"]
 schemars08 = ["newtype-uuid/schemars08", "schemars"]
+testing = ["newtype-uuid/proptest1"]
 uuid-v4 = ["newtype-uuid/v4"]
