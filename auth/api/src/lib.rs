@@ -1,5 +1,6 @@
 use dropshot::{
-    EndpointTagPolicy, HttpError, HttpResponseOk, Path, RequestContext, TypedBody
+    EndpointTagPolicy, HttpError, HttpResponseOk, Path, RequestContext,
+    TypedBody,
 };
 use dropshot_api_manager_types::api_versions;
 use lumen_auth_types_versions::latest;

@@ -1,4 +1,6 @@
-use dropshot::{ApiDescription, HttpError, HttpResponseOk, Path, RequestContext, TypedBody};
+use dropshot::{
+    ApiDescription, HttpError, HttpResponseOk, Path, RequestContext, TypedBody,
+};
 use jsonwebtoken::jwk::{AlgorithmParameters, PublicKeyUse};
 use lumen_auth_api::AuthApi;
 use lumen_auth_types_versions::{
@@ -36,7 +38,8 @@ impl AuthApi for AuthApiImpl {
     async fn invite_user(
         _rqctx: RequestContext<Self::Context>,
         _body: TypedBody<latest::user::InviteUserRequest>,
-    ) -> Result<HttpResponseOk<latest::user::InviteUserResponse>, HttpError> {
+    ) -> Result<HttpResponseOk<latest::user::InviteUserResponse>, HttpError>
+    {
         unimplemented!()
     }
 
