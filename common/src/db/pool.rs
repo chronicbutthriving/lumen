@@ -1,14 +1,21 @@
 use std::time::Duration;
 
-use deadpool::managed::{Object, PoolConfig, PoolError as DpPoolError, Timeouts};
+use deadpool::managed::{
+    Object, PoolConfig, PoolError as DpPoolError, Timeouts,
+};
 use diesel_async::AsyncPgConnection;
-use diesel_async::pooled_connection::{AsyncDieselConnectionManager, PoolError};
 use diesel_async::pooled_connection::deadpool::Pool as DieselPool;
+use diesel_async::pooled_connection::{
+    AsyncDieselConnectionManager, PoolError,
+};
 use serde::{Deserialize, Serialize};
 
-type ConnMgr = AsyncDieselConnectionManager::<diesel_async::AsyncPgConnection>;
+type ConnMgr = AsyncDieselConnectionManager<diesel_async::AsyncPgConnection>;
 pub type DbPoolError = DpPoolError<PoolError>;
-pub type PoolConnResult = Result<Object<AsyncDieselConnectionManager<AsyncPgConnection>>, DbPoolError>;
+pub type PoolConnResult = Result<
+    Object<AsyncDieselConnectionManager<AsyncPgConnection>>,
+    DbPoolError,
+>;
 
 pub struct DbPool {
     pool: DieselPool<AsyncPgConnection>,
@@ -33,7 +40,6 @@ impl DbPool {
                     create: config.connect_timeout,
                     wait: config.wait_timeout,
                     recycle: config.recycle_timeout,
-                    ..Default::default()
                 },
                 ..Default::default()
             })

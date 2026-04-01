@@ -1,8 +1,11 @@
 use clap::{Parser, Subcommand};
 use diesel::Connection;
-use diesel_migrations::{EmbeddedMigrations, embed_migrations, MigrationHarness};
+use diesel_migrations::{
+    EmbeddedMigrations, MigrationHarness, embed_migrations,
+};
 
-pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("../../common/migrations");
+pub const MIGRATIONS: EmbeddedMigrations =
+    embed_migrations!("../../common/migrations");
 
 #[derive(Parser)]
 struct MigrationApp {
@@ -28,10 +31,12 @@ fn main() {
 
     match args.command {
         Cmds::Run => {
-            conn.run_pending_migrations(MIGRATIONS).expect("Failed to run migrations");
-        },
+            conn.run_pending_migrations(MIGRATIONS)
+                .expect("Failed to run migrations");
+        }
         Cmds::Reset => {
-            conn.revert_all_migrations(MIGRATIONS).expect("Failed to revert migrations");
-        },
+            conn.revert_all_migrations(MIGRATIONS)
+                .expect("Failed to revert migrations");
+        }
     }
 }

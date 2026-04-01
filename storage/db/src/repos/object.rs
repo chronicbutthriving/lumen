@@ -1,11 +1,17 @@
 use anyhow::anyhow;
 use async_trait::async_trait;
-use lumen_common::{api::external::ResourceType, db::{PaginationParams, schema::{self, storage_object}}};
+use lumen_common::{
+    api::external::ResourceType,
+    db::{
+        PaginationParams,
+        error::{StoreError, StoreResult},
+        schema::{self, storage_object},
+    },
+};
 use lumen_uuid_kinds::{GenericUuid, ObjectUuid};
 
 use crate::{
     dbs::{MockStore, PgStore},
-    error::{StoreError, StoreResult},
     models::{ObjectModel, StorageProviderKind},
 };
 
@@ -26,7 +32,10 @@ impl ObjectFilter {
         self
     }
 
-    pub fn with_provider_kinds(mut self, provider_kinds: Vec<StorageProviderKind>) -> Self {
+    pub fn with_provider_kinds(
+        mut self,
+        provider_kinds: Vec<StorageProviderKind>,
+    ) -> Self {
         self.provider_kinds = Some(provider_kinds);
         self
     }
@@ -111,18 +120,18 @@ impl ObjectStore for PgStore {
 
         let mut query = schema::storage_object::table.into_boxed();
 
-        let ObjectFilter {
-            ids,
-            provider_kinds,
-            deleted,
-        } = filter;
+        let ObjectFilter { ids, provider_kinds, deleted } = filter;
 
         if let Some(ids) = ids {
-            query = query.filter(storage_object::id.eq_any(ids.into_iter().map(|id| id.into_untyped_uuid())));
+            query = query.filter(
+                storage_object::id
+                    .eq_any(ids.into_iter().map(|id| id.into_untyped_uuid())),
+            );
         }
 
         if let Some(provider_kinds) = provider_kinds {
-            query = query.filter(storage_object::provider_kind.eq_any(provider_kinds));
+            query = query
+                .filter(storage_object::provider_kind.eq_any(provider_kinds));
         }
 
         if !deleted {
@@ -135,10 +144,10 @@ impl ObjectStore for PgStore {
             .offset(pagination.offset.unwrap_or(0) as i64)
             .limit(pagination.limit.unwrap_or(50) as i64);
 
-        let results: Vec<ObjectModel> = query
-            .get_results(&mut conn)
-            .await
-            .map_err(|e| StoreError::Internal(anyhow!("Failed to query objects: {e}")))?;
+        let results: Vec<ObjectModel> =
+            query.get_results(&mut conn).await.map_err(|e| {
+                StoreError::Internal(anyhow!("Failed to query objects: {e}"))
+            })?;
 
         Ok(results)
     }
