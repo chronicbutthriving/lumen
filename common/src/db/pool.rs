@@ -40,7 +40,6 @@ impl DbPool {
                     create: config.connect_timeout,
                     wait: config.wait_timeout,
                     recycle: config.recycle_timeout,
-                    ..Default::default()
                 },
                 ..Default::default()
             })
