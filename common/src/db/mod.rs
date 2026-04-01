@@ -39,10 +39,7 @@ impl PaginationParams {
 
 impl Default for PaginationParams {
     fn default() -> Self {
-        Self {
-            limit: Some(50),
-            offset: Some(0),
-        }
+        Self { limit: Some(50), offset: Some(0) }
     }
 }
 

@@ -28,10 +28,8 @@ impl AuthApi for AuthApiImpl {
         dropshot::HttpResponseOk<latest::system::Ping>,
         dropshot::HttpError,
     > {
-        Ok(dropshot::HttpResponseOk(
-            latest::system::Ping {
-                status: latest::system::PingStatus::Ok,
-            },
-        ))
+        Ok(dropshot::HttpResponseOk(latest::system::Ping {
+            status: latest::system::PingStatus::Ok,
+        }))
     }
 }

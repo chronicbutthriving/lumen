@@ -1,4 +1,6 @@
-use dropshot::{ApiDescription, HttpError, HttpResponseOk, Path, RequestContext};
+use dropshot::{
+    ApiDescription, HttpError, HttpResponseOk, Path, RequestContext,
+};
 use lumen_common::{api::external::error::Error, db::PaginationParams};
 use lumen_storage_api::StorageApi;
 use lumen_storage_db::repos::{ObjectFilter, ObjectStore};
@@ -34,7 +36,8 @@ impl StorageApi for StorageApiImpl {
 
     async fn list_objects(
         rqctx: RequestContext<Self::Context>,
-    ) -> Result<HttpResponseOk<Vec<latest::object::StorageObject>>, HttpError> {
+    ) -> Result<HttpResponseOk<Vec<latest::object::StorageObject>>, HttpError>
+    {
         let storage = rqctx.context().storage();
 
         let result = ObjectStore::list(
@@ -45,20 +48,21 @@ impl StorageApi for StorageApiImpl {
         .await
         .map_err(Error::from)?;
 
-        Ok(HttpResponseOk(
-            result.iter().map(|o| o.to_owned().into()).collect(),
-        ))
+        Ok(HttpResponseOk(result.iter().map(|o| o.to_owned().into()).collect()))
     }
 
     async fn ping(
         _rqctx: dropshot::RequestContext<Self::Context>,
     ) -> Result<
-        dropshot::HttpResponseOk<lumen_storage_types_versions::latest::system::Ping>,
+        dropshot::HttpResponseOk<
+            lumen_storage_types_versions::latest::system::Ping,
+        >,
         dropshot::HttpError,
     > {
         Ok(dropshot::HttpResponseOk(
             lumen_storage_types_versions::latest::system::Ping {
-                status: lumen_storage_types_versions::latest::system::PingStatus::Ok,
+                status:
+                    lumen_storage_types_versions::latest::system::PingStatus::Ok,
             },
         ))
     }

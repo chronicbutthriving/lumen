@@ -3,7 +3,9 @@
 //! See this crate's `README.adoc` for more information.
 
 #[doc(no_inline)]
-pub use newtype_uuid::{GenericUuid, ParseError, TagError, TypedUuid, TypedUuidKind, TypedUuidTag};
+pub use newtype_uuid::{
+    GenericUuid, ParseError, TagError, TypedUuid, TypedUuidKind, TypedUuidTag,
+};
 
 use newtype_uuid_macros::impl_typed_uuid_kinds;
 

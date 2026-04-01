@@ -42,11 +42,9 @@ async fn main() -> Result<(), anyhow::Error> {
         "config" => ?config,
     );
 
-    let dropshot_server = lumen_storage::start_server(
-        log,
-        &config.dropshot,
-        config.database
-    ).await?;
+    let dropshot_server =
+        lumen_storage::start_server(log, &config.dropshot, config.database)
+            .await?;
 
     dropshot_server
         .await

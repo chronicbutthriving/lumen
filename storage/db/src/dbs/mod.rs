@@ -34,9 +34,7 @@ pub struct MockStore {
 
 impl MockStore {
     pub fn new() -> Self {
-        Self {
-            objects: HashMap::new(),
-        }
+        Self { objects: HashMap::new() }
     }
 }
 

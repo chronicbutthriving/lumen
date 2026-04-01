@@ -4,8 +4,8 @@ use diesel::{
     prelude::{Insertable, Queryable},
 };
 use diesel_enums::pg_enum;
-use lumen_common::db::schema;
 use lumen_common::db::DbTypedUuid;
+use lumen_common::db::schema;
 use lumen_storage_types_versions::v1::object;
 use lumen_uuid_kinds::{ObjectKind, ObjectUuid};
 use serde::{Deserialize, Serialize};
@@ -20,7 +20,9 @@ pub enum StorageProviderKind {
     Local,
 }
 
-#[derive(Debug, Clone, Queryable, Insertable, Selectable, Serialize, Deserialize)]
+#[derive(
+    Debug, Clone, Queryable, Insertable, Selectable, Serialize, Deserialize,
+)]
 #[diesel(table_name = schema::storage_object)]
 pub struct ObjectModel {
     pub id: DbTypedUuid<ObjectKind>,
@@ -77,7 +79,9 @@ impl From<ObjectModel> for object::StorageObject {
             time_modified: model.time_modified,
             time_deleted: model.time_deleted,
             provider_kind: match model.provider_kind {
-                StorageProviderKind::Local => object::StorageProviderKind::Local,
+                StorageProviderKind::Local => {
+                    object::StorageProviderKind::Local
+                }
             },
             provider_path: model.provider_path,
             mime_type: model.mime_type,

@@ -3,10 +3,12 @@ use std::process::ExitCode;
 use anyhow::Context;
 use camino::Utf8PathBuf;
 use clap::Parser;
-use dropshot_api_manager::{Environment, ManagedApi, ManagedApiConfig, ManagedApis};
+use dropshot_api_manager::{
+    Environment, ManagedApi, ManagedApiConfig, ManagedApis,
+};
 use dropshot_api_manager_types::{ManagedApiMetadata, Versions};
-use lumen_storage_api::*;
 use lumen_auth_api::*;
+use lumen_storage_api::*;
 use serde::{Deserialize, Serialize};
 
 fn environment() -> anyhow::Result<Environment> {
@@ -16,7 +18,8 @@ fn environment() -> anyhow::Result<Environment> {
         .parent()
         .unwrap()
         .to_path_buf();
-    let env = Environment::new("cargo xtask openapi", workspace_root, "openapi")?;
+    let env =
+        Environment::new("cargo xtask openapi", workspace_root, "openapi")?;
     Ok(env)
 }
 
@@ -24,9 +27,13 @@ fn all_apis() -> anyhow::Result<ManagedApis> {
     let apis = vec![
         ManagedApi::from(ManagedApiConfig {
             title: "Auth API",
-            versions: Versions::new_versioned(lumen_auth_api::supported_versions()),
+            versions: Versions::new_versioned(
+                lumen_auth_api::supported_versions(),
+            ),
             metadata: ManagedApiMetadata {
-                description: Some("Authentication API for consumption by other internal services."),
+                description: Some(
+                    "Authentication API for consumption by other internal services.",
+                ),
                 contact_url: Some("https://chronicbutthriving.co.uk"),
                 contact_email: Some("engineering@chronicbutthriving.co.uk"),
                 extra: to_value(ApiBoundary::External),
@@ -34,12 +41,15 @@ fn all_apis() -> anyhow::Result<ManagedApis> {
             api_description: auth_api_mod::stub_api_description,
             ident: "auth",
         }),
-
         ManagedApi::from(ManagedApiConfig {
             title: "Storage API",
-            versions: Versions::new_versioned(lumen_storage_api::supported_versions()),
+            versions: Versions::new_versioned(
+                lumen_storage_api::supported_versions(),
+            ),
             metadata: ManagedApiMetadata {
-                description: Some("Storage API for consumption by other internal services."),
+                description: Some(
+                    "Storage API for consumption by other internal services.",
+                ),
                 contact_url: Some("https://chronicbutthriving.co.uk"),
                 contact_email: Some("engineering@chronicbutthriving.co.uk"),
                 extra: to_value(ApiBoundary::Internal),

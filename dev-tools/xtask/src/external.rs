@@ -31,7 +31,8 @@ impl CargoLocation {
     fn resolve(self) -> Command {
         match self {
             CargoLocation::FromEnv => {
-                let cargo = std::env::var_os("CARGO").unwrap_or_else(|| OsString::from("cargo"));
+                let cargo = std::env::var_os("CARGO")
+                    .unwrap_or_else(|| OsString::from("cargo"));
                 Command::new(&cargo)
             }
         }
@@ -103,13 +104,8 @@ impl External {
     }
 
     fn exec_common(mut self, kind: &'static str, target: &OsStr) -> Result<()> {
-        let error = self
-            .command
-            .arg(kind)
-            .arg(target)
-            .arg("--")
-            .args(self.args)
-            .exec();
+        let error =
+            self.command.arg(kind).arg(target).arg("--").args(self.args).exec();
         Err(error).context("failed to exec `cargo run`")
     }
 }
