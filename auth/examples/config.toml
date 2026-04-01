@@ -1,0 +1,40 @@
+[dropshot]
+default_request_body_max_bytes = 8388608
+
+[database]
+# The URL to connect to the database. The format is:
+# postgresql://user:password@host:port/database?options
+url = "postgresql://lumen:lumen@localhost:5432/lumen?sslmode=disable"
+
+# The maximum number of connections to the database to allow when pooling.
+max_conns = 10
+
+# How long to wait before timing out when connecting to the database.
+#connect_timeout = "5s"
+
+# How long to wait before timing out when waiting for a connection from the pool.
+#wait_timeout = "15s"
+
+# How long to wait before timing out when trying to recycle a connection from the pool.
+#recycle_timeout = "15s"
+
+# Example of a key provider
+[[keys]]
+private_key_path = "auth/examples/keys/private.pem"
+public_key_path = "auth/examples/keys/public.pem"
+# Alternatively, you can specify the key directly:
+#private_key = """"""
+#public_key = """"""
+
+# Example of a storage provider for Google Cloud Storage (GCS)
+#[[storage.providers.gcs]]
+#active = false
+#kind   = "gcs"
+#bucket = "bkt-p-chronic-storage"
+#prefix = "chronic"
+
+[log]
+# Log at this level or higher.
+level = "debug"
+
+mode = "stderr-terminal"

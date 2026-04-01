@@ -1,0 +1,26 @@
+:showtitle:
+:toc: left
+:icons: font
+
+= Auth Service
+
+This service is responsible for handling user authentication as well as being a
+single source of truth for keys and signing tokens.
+
+== Generating Keys
+
+To generate keys for use with this service, you can use the following commands:
+
+[source,bash]
+----
+openssl genpkey \
+  -algorithm ed25519 \
+  -out auth/examples/keys/private.pem \
+  -outpubkey auth/examples/keys/public.pem \
+  -pkeyopt rsa_keygen_bits:2048
+----
+
+This will override the existing keys in the `auth/examples/keys` directory, so
+be sure to back up any existing keys before running this command. The generated
+keys will be used for signing and verifying JWT tokens for authentication
+purposes.

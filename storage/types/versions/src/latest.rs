@@ -1,10 +1,10 @@
 pub mod object {
-    pub use crate::v2026_03_31_00::object::GetObjectParams;
-    pub use crate::v2026_03_31_00::object::StorageObject;
-    pub use crate::v2026_03_31_00::object::StorageProviderKind;
+    pub use crate::v1::object::GetObjectParams;
+    pub use crate::v1::object::StorageObject;
+    pub use crate::v1::object::StorageProviderKind;
 }
 
 pub mod system {
-    pub use crate::v2026_03_31_00::system::Ping;
-    pub use crate::v2026_03_31_00::system::PingStatus;
+    pub use crate::v1::system::Ping;
+    pub use crate::v1::system::PingStatus;
 }

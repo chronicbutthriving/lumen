@@ -6,6 +6,7 @@ use clap::Parser;
 use dropshot_api_manager::{Environment, ManagedApi, ManagedApiConfig, ManagedApis};
 use dropshot_api_manager_types::{ManagedApiMetadata, Versions};
 use lumen_storage_api::*;
+use lumen_auth_api::*;
 use serde::{Deserialize, Serialize};
 
 fn environment() -> anyhow::Result<Environment> {
@@ -20,18 +21,33 @@ fn environment() -> anyhow::Result<Environment> {
 }
 
 fn all_apis() -> anyhow::Result<ManagedApis> {
-    let apis = vec![ManagedApi::from(ManagedApiConfig {
-        title: "Storage API",
-        versions: Versions::new_versioned(lumen_storage_api::supported_versions()),
-        metadata: ManagedApiMetadata {
-            description: Some("Storage API for consumption by other internal services."),
-            contact_url: Some("https://chronicbutthriving.co.uk"),
-            contact_email: Some("engineering@chronicbutthriving.co.uk"),
-            extra: to_value(ApiBoundary::Internal),
-        },
-        api_description: storage_api_mod::stub_api_description,
-        ident: "storage",
-    })];
+    let apis = vec![
+        ManagedApi::from(ManagedApiConfig {
+            title: "Auth API",
+            versions: Versions::new_versioned(lumen_auth_api::supported_versions()),
+            metadata: ManagedApiMetadata {
+                description: Some("Authentication API for consumption by other internal services."),
+                contact_url: Some("https://chronicbutthriving.co.uk"),
+                contact_email: Some("engineering@chronicbutthriving.co.uk"),
+                extra: to_value(ApiBoundary::External),
+            },
+            api_description: auth_api_mod::stub_api_description,
+            ident: "auth",
+        }),
+
+        ManagedApi::from(ManagedApiConfig {
+            title: "Storage API",
+            versions: Versions::new_versioned(lumen_storage_api::supported_versions()),
+            metadata: ManagedApiMetadata {
+                description: Some("Storage API for consumption by other internal services."),
+                contact_url: Some("https://chronicbutthriving.co.uk"),
+                contact_email: Some("engineering@chronicbutthriving.co.uk"),
+                extra: to_value(ApiBoundary::Internal),
+            },
+            api_description: storage_api_mod::stub_api_description,
+            ident: "storage",
+        }),
+    ];
 
     let apis = ManagedApis::new(apis)
         .context("error creating ManagedApis")?

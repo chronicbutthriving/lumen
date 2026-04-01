@@ -1,6 +1,12 @@
 [workspace]
 resolver = "3"
 members = [
+  "auth",
+  "auth/api",
+  "auth/db",
+  "auth/types",
+  "auth/types/versions",
+  "clients/auth",
   "clients/storage",
   "common",
   "dev-tools/dropshot-apis",
@@ -41,6 +47,10 @@ lumen-storage-api = { path = "storage/api" }
 lumen-storage-db = { path = "storage/db" }
 lumen-storage-types = { path = "storage/types" }
 lumen-storage-types-versions = { path = "storage/types/versions" }
+lumen-auth-api = { path = "auth/api" }
+lumen-auth-db = { path = "auth/db" }
+lumen-auth-types = { path = "auth/types" }
+lumen-auth-types-versions = { path = "auth/types/versions" }
 openapiv3 = "2.2.0"
 parse-display = "0.10.0"
 progenitor = "0.13.0"

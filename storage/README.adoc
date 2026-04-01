@@ -1,0 +1,8 @@
+:showtitle:
+:toc: left
+:icons: font
+
+= Storage Service
+
+This service is responsible for handling object storage and CDN passthrough, and
+is a purely internal service that is not exposed to the public.
