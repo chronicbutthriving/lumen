@@ -1,6 +1,7 @@
 use dropshot::{ApiDescription, HttpError, HttpResponseOk, RequestContext};
+use jsonwebtoken::jwk::{AlgorithmParameters, JwkSet, PublicKeyUse};
 use lumen_auth_api::AuthApi;
-use lumen_auth_types_versions::latest;
+use lumen_auth_types_versions::{latest, v1::system::{Jwk, JwksResponse}};
 
 use crate::context::Context;
 
@@ -17,9 +18,36 @@ impl AuthApi for AuthApiImpl {
     type Context = super::context::Context;
 
     async fn get_jwks(
-        _rqctx: RequestContext<Self::Context>,
+        rqctx: RequestContext<Self::Context>,
     ) -> Result<HttpResponseOk<latest::system::JwksResponse>, HttpError> {
-        Ok(HttpResponseOk(latest::system::JwksResponse { keys: Vec::new() }))
+        let jwks = rqctx.context().jwks().await;
+
+        let resp = JwksResponse {
+            keys: jwks
+                .keys
+                .iter()
+                .map(|jwk| {
+                    let (algo, x) = match &jwk.algorithm {
+                        AlgorithmParameters::OctetKeyPair(params) => {
+                            ("OKP".to_string(), params.x.clone())
+                        }
+                        _ => panic!("Unexpected key type"),
+                    };
+
+                    Jwk {
+                        kty: algo,
+                        kid: jwk.common.key_id.as_ref().unwrap().clone(),
+                        use_: match jwk.common.public_key_use {
+                            Some(PublicKeyUse::Signature) => "sig".to_string(),
+                            _ => panic!("Unexpected key use"),
+                        },
+                        x,
+                    }
+                })
+                .collect(),
+        };
+
+        Ok(HttpResponseOk(resp))
     }
 
     async fn ping(

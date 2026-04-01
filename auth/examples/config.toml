@@ -1,6 +1,9 @@
 [dropshot]
 default_request_body_max_bytes = 8388608
 
+[jwt]
+default_expiration = 3600
+
 [database]
 # The URL to connect to the database. The format is:
 # postgresql://user:password@host:port/database?options
@@ -20,18 +23,14 @@ max_conns = 10
 
 # Example of a key provider
 [[keys]]
-private_key_path = "auth/examples/keys/private.pem"
-public_key_path = "auth/examples/keys/public.pem"
-# Alternatively, you can specify the key directly:
-#private_key = """"""
-#public_key = """"""
+kind = "local_verifier"
+kid = "my-first-key"
+public = { path = "auth/examples/keys/public.pem" }
 
-# Example of a storage provider for Google Cloud Storage (GCS)
-#[[storage.providers.gcs]]
-#active = false
-#kind   = "gcs"
-#bucket = "bkt-p-chronic-storage"
-#prefix = "chronic"
+[[keys]]
+kind = "local_signer"
+kid = "my-first-key"
+private = { path = "auth/examples/keys/private.pem" }
 
 [log]
 # Log at this level or higher.

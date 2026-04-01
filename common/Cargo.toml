@@ -17,6 +17,7 @@ iddqd.workspace = true
 lumen-uuid-kinds.workspace = true
 parse-display.workspace = true
 schemars = { workspace = true, features = ["chrono", "uuid1"] }
+secrecy.workspace = true
 serde.workspace = true
 serde_with.workspace = true
 thiserror.workspace = true
@@ -26,6 +27,8 @@ uuid.workspace = true
 lumen-uuid-kinds = { workspace = true, features = ["testing"] }
 proptest.workspace = true
 test-strategy.workspace = true
+tempfile.workspace = true
+toml.workspace = true
 
 [features]
 default = []

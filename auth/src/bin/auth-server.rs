@@ -2,6 +2,7 @@ use std::{net::SocketAddr, path::PathBuf};
 
 use anyhow::{Context, anyhow};
 use clap::Parser;
+use lumen_auth::config::Config;
 use serde::Deserialize;
 use slog::info;
 
@@ -12,13 +13,6 @@ struct Args {
 
     #[clap(long, action)]
     http_address: SocketAddr,
-}
-
-#[derive(Deserialize, Debug)]
-pub struct Config {
-    pub database: lumen_common::db::pool::DatabaseConfig,
-    pub log: dropshot::ConfigLogging,
-    pub dropshot: dropshot::ConfigDropshot,
 }
 
 #[tokio::main]
@@ -43,7 +37,7 @@ async fn main() -> Result<(), anyhow::Error> {
     );
 
     let dropshot_server =
-        lumen_auth::start_server(log, &config.dropshot, config.database)
+        lumen_auth::start_server(log, &config.dropshot, config.keys, config.database)
             .await?;
 
     dropshot_server

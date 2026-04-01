@@ -7,9 +7,7 @@ pub struct Jwk {
     pub kid: String,
     #[serde(rename = "use")]
     pub use_: String,
-    pub alg: String,
-    pub n: String,
-    pub e: String,
+    pub x: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
