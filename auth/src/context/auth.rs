@@ -6,9 +6,7 @@ pub struct AuthContext {
 
 impl AuthContext {
     pub fn new(jwks: JwkSet) -> Self {
-        Self {
-            jwt: JwtContext { jwks },
-        }
+        Self { jwt: JwtContext { jwks } }
     }
 
     pub async fn jwks(&self) -> &JwkSet {

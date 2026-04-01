@@ -4,8 +4,7 @@ use diesel::{
     prelude::{Insertable, Queryable},
 };
 use diesel_enums::pg_enum;
-use lumen_common::db::DbTypedUuid;
-use lumen_common::db::schema;
+use lumen_common::db::{DbTypedUuid, schema};
 use lumen_storage_types_versions::v1::object;
 use lumen_uuid_kinds::{ObjectKind, ObjectUuid};
 use serde::{Deserialize, Serialize};

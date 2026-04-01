@@ -1,5 +1,7 @@
-use lumen_common::api::external::ResourceType;
-use lumen_common::api::external::error::Error as ApiError;
+use crate::{
+    api::external::{ResourceType, error::Error as ApiError},
+    db::pool::DbPoolError,
+};
 
 #[derive(Debug, thiserror::Error)]
 pub enum StoreError {
@@ -10,7 +12,7 @@ pub enum StoreError {
     Conflict,
 
     #[error("Database pool error: {0}")]
-    PoolError(#[from] lumen_common::db::pool::DbPoolError),
+    PoolError(#[from] DbPoolError),
 
     #[error("Internal error: {0}")]
     Internal(anyhow::Error),

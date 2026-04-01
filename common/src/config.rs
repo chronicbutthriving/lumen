@@ -50,7 +50,10 @@ impl StringParam {
     ///
     /// For inline values, returns the value directly.
     /// For path-based values, reads the file contents and trims trailing whitespace.
-    pub fn resolve(&self, base: Option<PathBuf>) -> Result<SecretString, ParamResolutionError> {
+    pub fn resolve(
+        &self,
+        base: Option<PathBuf>,
+    ) -> Result<SecretString, ParamResolutionError> {
         match self {
             StringParam::Inline(value) => Ok(value.clone()),
             StringParam::FromPath { path } => {
@@ -59,12 +62,13 @@ impl StringParam {
                 } else {
                     path.clone()
                 };
-                let content = std::fs::read_to_string(&path).map_err(|source| {
-                    ParamResolutionError::FileRead {
-                        path: path.display().to_string(),
-                        source,
-                    }
-                })?;
+                let content =
+                    std::fs::read_to_string(&path).map_err(|source| {
+                        ParamResolutionError::FileRead {
+                            path: path.display().to_string(),
+                            source,
+                        }
+                    })?;
                 // Trim trailing whitespace/newlines that are common in param files
                 Ok(content.trim_end().to_string().into())
             }
@@ -102,9 +106,7 @@ mod tests {
         let mut file = NamedTempFile::new().unwrap();
         write!(file, "file-param").unwrap();
 
-        let param = StringParam::FromPath {
-            path: file.path().to_path_buf(),
-        };
+        let param = StringParam::FromPath { path: file.path().to_path_buf() };
         assert_eq!(param.resolve(None).unwrap().expose_secret(), "file-param");
     }
 
@@ -130,17 +132,14 @@ mod tests {
         writeln!(file, "file-param").unwrap();
         writeln!(file).unwrap();
 
-        let param = StringParam::FromPath {
-            path: file.path().to_path_buf(),
-        };
+        let param = StringParam::FromPath { path: file.path().to_path_buf() };
         assert_eq!(param.resolve(None).unwrap().expose_secret(), "file-param");
     }
 
     #[test]
     fn test_from_path_file_not_found() {
-        let param = StringParam::FromPath {
-            path: PathBuf::from("/nonexistent/path"),
-        };
+        let param =
+            StringParam::FromPath { path: PathBuf::from("/nonexistent/path") };
         let result = param.resolve(None);
         assert!(matches!(result, Err(ParamResolutionError::FileRead { .. })));
     }

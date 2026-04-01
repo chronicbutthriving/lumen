@@ -32,7 +32,7 @@ pub struct StorageObject {
     pub mime_type: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, JsonSchema)]
 pub struct GetObjectParams {
     pub id: ObjectUuid,
 }

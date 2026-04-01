@@ -1,11 +1,14 @@
 use std::path::PathBuf;
 
-use base64::{Engine,prelude::BASE64_URL_SAFE_NO_PAD as URL_SAFE_NO_PAD};
-use jsonwebtoken::jwk::{AlgorithmParameters, CommonParameters, EllipticCurve, Jwk, KeyAlgorithm, OctetKeyPairParameters, OctetKeyPairType, PublicKeyUse};
+use base64::{Engine, prelude::BASE64_URL_SAFE_NO_PAD as URL_SAFE_NO_PAD};
+use ed25519_dalek::{VerifyingKey, pkcs8::DecodePublicKey};
+use jsonwebtoken::jwk::{
+    AlgorithmParameters, CommonParameters, EllipticCurve, Jwk, KeyAlgorithm,
+    OctetKeyPairParameters, OctetKeyPairType, PublicKeyUse,
+};
 use lumen_common::config::StringParam;
 use secrecy::ExposeSecret;
 use serde::Deserialize;
-use ed25519_dalek::{VerifyingKey, pkcs8::DecodePublicKey};
 
 use crate::auth::{SigningKeyError, jwt::JwtSignerError};
 
@@ -25,23 +28,15 @@ pub struct JwtConfig {
 
 impl Default for JwtConfig {
     fn default() -> Self {
-        Self {
-            default_expiration: 3600,
-        }
+        Self { default_expiration: 3600 }
     }
 }
 
 #[derive(Deserialize, Debug)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum AsymmetricKey {
-    LocalVerifier {
-        kid: String,
-        public: StringParam,
-    },
-    LocalSigner {
-        kid: String,
-        private: StringParam,
-    }
+    LocalVerifier { kid: String, public: StringParam },
+    LocalSigner { kid: String, private: StringParam },
 }
 
 impl AsymmetricKey {
@@ -52,9 +47,13 @@ impl AsymmetricKey {
         }
     }
 
-    pub fn resolve_jwk(&self, path: Option<PathBuf>) -> Result<Jwk, JwtSignerError> {
+    pub fn resolve_jwk(
+        &self,
+        path: Option<PathBuf>,
+    ) -> Result<Jwk, JwtSignerError> {
         let key_id = self.kid();
-        let public_key = self.public_key(path).map_err(JwtSignerError::InvalidKey)?;
+        let public_key =
+            self.public_key(path).map_err(JwtSignerError::InvalidKey)?;
 
         Ok(Jwk {
             common: CommonParameters {
@@ -67,18 +66,25 @@ impl AsymmetricKey {
                 x509_sha256_fingerprint: None,
                 x509_url: None,
             },
-            algorithm: AlgorithmParameters::OctetKeyPair(OctetKeyPairParameters {
-                key_type: OctetKeyPairType::OctetKeyPair,
-                curve: EllipticCurve::Ed25519,
-                x: URL_SAFE_NO_PAD.encode(public_key.to_bytes()),
-            }),
+            algorithm: AlgorithmParameters::OctetKeyPair(
+                OctetKeyPairParameters {
+                    key_type: OctetKeyPairType::OctetKeyPair,
+                    curve: EllipticCurve::Ed25519,
+                    x: URL_SAFE_NO_PAD.encode(public_key.to_bytes()),
+                },
+            ),
         })
     }
 
-    fn public_key(&self, path: Option<PathBuf>) -> Result<VerifyingKey, SigningKeyError> {
+    fn public_key(
+        &self,
+        path: Option<PathBuf>,
+    ) -> Result<VerifyingKey, SigningKeyError> {
         Ok(match self {
             AsymmetricKey::LocalVerifier { public, .. } => {
-                VerifyingKey::from_public_key_pem(public.resolve(path)?.expose_secret())?
+                VerifyingKey::from_public_key_pem(
+                    public.resolve(path)?.expose_secret(),
+                )?
             }
             _ => Err(SigningKeyError::KeyDoesNotSupportFunction)?,
         })

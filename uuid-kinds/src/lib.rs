@@ -26,6 +26,7 @@ impl_typed_uuid_kinds! {
         AccessToken = {},
         User = {},
         UserProvider = {},
+        UserPassword = {},
 
         // Storage Service
         Object = {},

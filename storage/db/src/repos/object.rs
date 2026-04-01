@@ -4,6 +4,7 @@ use lumen_common::{
     api::external::ResourceType,
     db::{
         PaginationParams,
+        error::{StoreError, StoreResult},
         schema::{self, storage_object},
     },
 };
@@ -11,7 +12,6 @@ use lumen_uuid_kinds::{GenericUuid, ObjectUuid};
 
 use crate::{
     dbs::{MockStore, PgStore},
-    error::{StoreError, StoreResult},
     models::{ObjectModel, StorageProviderKind},
 };
 

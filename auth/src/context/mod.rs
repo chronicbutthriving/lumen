@@ -11,10 +11,7 @@ pub struct Context {
 }
 
 impl Context {
-    pub fn new(
-        param_path: Option<PathBuf>,
-        keys: Vec<AsymmetricKey>
-    ) -> Self {
+    pub fn new(param_path: Option<PathBuf>, keys: Vec<AsymmetricKey>) -> Self {
         let jwks = JwkSet {
             keys: keys
                 .iter()
@@ -22,9 +19,7 @@ impl Context {
                 .collect::<Vec<_>>(),
         };
 
-        Self {
-            auth: AuthContext::new(jwks),
-        }
+        Self { auth: AuthContext::new(jwks) }
     }
 
     pub async fn jwks(&self) -> &JwkSet {

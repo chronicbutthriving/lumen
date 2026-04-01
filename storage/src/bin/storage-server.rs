@@ -3,7 +3,6 @@ use std::{net::SocketAddr, path::PathBuf};
 use anyhow::{Context, anyhow};
 use clap::Parser;
 use serde::Deserialize;
-use slog::info;
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -31,16 +30,11 @@ async fn main() -> Result<(), anyhow::Error> {
         .with_context(|| format!("parse config file {:?}", config_file))?;
 
     config.dropshot.bind_address = args.http_address;
-    eprintln!("{:?}", config);
 
     let log = config
         .log
         .to_logger("storage-server")
         .context("failed to create logger")?;
-
-    info!(&log, "config";
-        "config" => ?config,
-    );
 
     let dropshot_server =
         lumen_storage::start_server(log, &config.dropshot, config.database)

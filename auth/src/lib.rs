@@ -1,10 +1,10 @@
 use anyhow::anyhow;
 use slog::o;
 
+mod auth;
 pub mod config;
 mod context;
 mod http_entrypoints;
-mod auth;
 
 pub async fn start_server(
     log: slog::Logger,
@@ -13,10 +13,7 @@ pub async fn start_server(
     _database_config: lumen_common::db::pool::DatabaseConfig,
 ) -> Result<dropshot::HttpServer<context::Context>, anyhow::Error> {
     let http_api = http_entrypoints::api();
-    let http_api_context = context::Context::new(
-        None,
-        keys_config,
-    );
+    let http_api_context = context::Context::new(None, keys_config);
 
     let server = dropshot::ServerBuilder::new(
         http_api,

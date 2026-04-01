@@ -1,7 +1,10 @@
-use dropshot::{ApiDescription, HttpError, HttpResponseOk, RequestContext};
-use jsonwebtoken::jwk::{AlgorithmParameters, JwkSet, PublicKeyUse};
+use dropshot::{ApiDescription, HttpError, HttpResponseOk, Path, RequestContext, TypedBody};
+use jsonwebtoken::jwk::{AlgorithmParameters, PublicKeyUse};
 use lumen_auth_api::AuthApi;
-use lumen_auth_types_versions::{latest, v1::system::{Jwk, JwksResponse}};
+use lumen_auth_types_versions::{
+    latest,
+    v1::system::{Jwk, JwksResponse},
+};
 
 use crate::context::Context;
 
@@ -16,6 +19,34 @@ pub enum AuthApiImpl {}
 
 impl AuthApi for AuthApiImpl {
     type Context = super::context::Context;
+
+    async fn list_users(
+        _rqctx: RequestContext<Self::Context>,
+    ) -> Result<HttpResponseOk<Vec<latest::user::User>>, HttpError> {
+        unimplemented!()
+    }
+
+    async fn get_user(
+        _rqctx: RequestContext<Self::Context>,
+        _path: Path<latest::user::UserPathParams>,
+    ) -> Result<HttpResponseOk<Vec<latest::user::User>>, HttpError> {
+        unimplemented!()
+    }
+
+    async fn invite_user(
+        _rqctx: RequestContext<Self::Context>,
+        _body: TypedBody<latest::user::InviteUserRequest>,
+    ) -> Result<HttpResponseOk<latest::user::InviteUserResponse>, HttpError> {
+        unimplemented!()
+    }
+
+    async fn update_user_password(
+        _rqctx: RequestContext<Self::Context>,
+        _path: Path<latest::user::UserPathParams>,
+        _body: TypedBody<latest::user::UpdateUserPasswordRequest>,
+    ) -> Result<HttpResponseOk<()>, HttpError> {
+        unimplemented!()
+    }
 
     async fn get_jwks(
         rqctx: RequestContext<Self::Context>,
