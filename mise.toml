@@ -4,4 +4,4 @@ _.file = ".env"
 [tools]
 "cargo:cargo-nextest" = "0.9.132"
 "cargo:diesel_cli" = { version = "2.3.7", default-features = false, features = "postgres" }
-rust = { version = "1.93.0", profile = "default", components = "rustfmt,clippy" }
+rust = { version = "1.95.0", profile = "default", components = "rustfmt,clippy" }
