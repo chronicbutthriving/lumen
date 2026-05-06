@@ -26,7 +26,7 @@ chrono = { version = "0.4", features = [ "serde" ] }
 clap = { version = "4.5", features = ["cargo", "derive", "env", "wrap_help"] }
 deadpool = { version = "0.12.3", features = ["managed", "rt_tokio_1", "serde"] }
 derive-where = "1.6.1"
-diesel = { version = "2.3.0", features = ["postgres", "chrono", "uuid"] }
+diesel = { version = "2.3.8", features = ["postgres", "chrono", "uuid"] }
 diesel-async = { version = "0.7.0", features = ["postgres", "deadpool"] }
 diesel_migrations = { version = "2.2.0", features = ["postgres"] }
 diesel-enums = { version = "0.2.2", features = ["postgres"] }
